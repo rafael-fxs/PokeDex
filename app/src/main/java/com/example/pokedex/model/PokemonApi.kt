@@ -1,7 +1,5 @@
-package com.example.pokedex.data.api
+package com.example.pokedex.model
 
-import com.example.pokedex.data.model.PokemonResponse
-import com.example.pokedex.data.model.PokemonsResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path

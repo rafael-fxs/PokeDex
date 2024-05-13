@@ -1,4 +1,4 @@
-package com.example.pokedex.domain.model
+package com.example.pokedex.model
 
 data class Pokemons(
     val count: Int,
