@@ -13,7 +13,9 @@ class PokemonListAdapter(private val items: List<Pokemon?>) : RecyclerView.Adapt
      inner class ViewHolder(private val binding: PokemonListRowBinding)
          :RecyclerView.ViewHolder(binding.root){
         fun bind(pokemon: Pokemon?){
-//            Picasso.get().load(pokemon.sprites.front_default).into(binding.pokemonImage)
+            if (pokemon != null) {
+                Picasso.get().load(pokemon.image).into(binding.pokemonImage)
+            }
             pokemon?.let {
                 binding.pokemonName.text = it.name
             }

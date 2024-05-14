@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pokedex.R
 import com.example.pokedex.databinding.ActivityMainBinding
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initRecyclerView(pokemons: List<Pokemon?>) {
-        binding.pokemonListRecyclerview.layoutManager = LinearLayoutManager(this)
+        binding.pokemonListRecyclerview.layoutManager = GridLayoutManager(this, 2)
         binding.pokemonListRecyclerview.adapter = PokemonListAdapter(pokemons)
     }
 }

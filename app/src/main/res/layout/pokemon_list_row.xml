@@ -1,26 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
-    <LinearLayout
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="15dp"
+        android:padding="5dp"
+        android:layout_margin="5dp"
+        android:id="@+id/cardView">
 
-        <ImageView android:id="@+id/pokemonImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            />
-
-        <TextView
-            android:id="@+id/pokemonName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:text="@android:string/unknownName"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            android:gravity="center"
+            android:orientation="vertical">
 
-    </LinearLayout>
+            <ImageView
+                android:id="@+id/pokemonImage"
+                android:layout_width="match_parent"
+                android:layout_height="125dp"
+                android:padding="10dp"
+                android:scaleType="fitCenter"
+                android:src="@android:drawable/ic_menu_help"
+                android:contentDescription="@string/pokemon_image" />
+
+            <TextView
+                android:textColor="@color/black"
+                android:padding="5dp"
+                android:layout_margin="5dp"
+                android:textSize="16sp"
+                android:id="@+id/pokemonName"
+                android:text="@android:string/unknownName"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </layout>
