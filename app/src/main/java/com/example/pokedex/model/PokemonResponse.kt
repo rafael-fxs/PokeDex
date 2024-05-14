@@ -2,16 +2,16 @@ package com.example.pokedex.model
 
 
 data class PokemonResponse (
-//    val id: Int,
+    val id: Int,
     val name: String,
     val url: String,
-//    val sprites: SpritesResponse,
+    val sprites: SpritesResponse,
 )
 
-//data class SpritesResponse (
-//    val front_default: String
-//)
-//
+data class SpritesResponse (
+    val front_default: String
+)
+
 //fun PokemonResponse.toPokemon() = Pokemon(
 //    id,
 //    name,

@@ -5,16 +5,8 @@ import com.example.pokedex.util.Constants.PAGE_SIZE
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class PokemonRepository {
+object PokemonRepository {
     private val service: PokemonApi
-    companion object {
-        fun getRetroInstance(): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-    }
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl(BASE_URL)

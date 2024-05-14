@@ -2,14 +2,37 @@ package com.example.pokedex.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.pokedex.model.PokemonsResponse
-import com.example.pokedex.model.Singleton
+import com.example.pokedex.model.Pokemon
+import com.example.pokedex.model.PokemonRepository
 
 class PokemonViewModel : ViewModel() {
 
-    var pokemons = MutableLiveData<PokemonsResponse>()
+    var pokemons = MutableLiveData<List<Pokemon?>>()
 
-    fun refresh(){
-        pokemons.value = Singleton.pokemons.value
+    init {
+        Thread(Runnable {
+            loadPokemons()
+        }).start()
+    }
+    private fun loadPokemons() {
+        val pokemonsApiResult = PokemonRepository.listPokemons()
+
+        pokemonsApiResult?.results?.let {
+            pokemons.postValue(it.map { pokemonResult ->
+                val number = pokemonResult.url
+                    .replace("https://pokeapi.co/api/v2/pokemon/", "")
+                    .replace("/", "").toInt()
+
+                val pokemonApiResult = PokemonRepository.getPokemon(number)
+
+                pokemonApiResult?.let {
+                    Pokemon(
+                        pokemonApiResult.id,
+                        pokemonApiResult.name,
+                        pokemonApiResult.sprites.front_default
+                    )
+                }
+            })
+        }
     }
 }
