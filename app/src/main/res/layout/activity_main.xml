@@ -18,5 +18,16 @@
             android:layout_margin="5dp"
         />
 
+        <ProgressBar
+            android:id="@+id/loadingProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/pokemonListRecyclerview"
+            app:layout_constraintEnd_toEndOf="@+id/pokemonListRecyclerview"
+            app:layout_constraintStart_toStartOf="@+id/pokemonListRecyclerview"
+            app:layout_constraintTop_toTopOf="@+id/pokemonListRecyclerview" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

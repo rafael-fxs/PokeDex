@@ -2,28 +2,36 @@ package com.example.pokedex.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.pokedex.model.Pokemon
 import com.example.pokedex.model.PokemonRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class PokemonViewModel : ViewModel() {
-
     var pokemons = MutableLiveData<List<Pokemon?>>()
 
     init {
-        Thread(Runnable {
+        viewModelScope.launch {
             loadPokemons()
-        }).start()
+        }
     }
-    private fun loadPokemons() {
-        val pokemonsApiResult = PokemonRepository.listPokemons()
+
+    private suspend fun loadPokemons() {
+        val pokemonsApiResult = withContext(Dispatchers.IO) {
+            PokemonRepository.listPokemons()
+        }
 
         pokemonsApiResult?.results?.let {
-            pokemons.postValue(it.map { pokemonResult ->
+            val pokemonList = it.map { pokemonResult ->
                 val number = pokemonResult.url
                     .replace("https://pokeapi.co/api/v2/pokemon/", "")
                     .replace("/", "").toInt()
 
-                val pokemonApiResult = PokemonRepository.getPokemon(number)
+                val pokemonApiResult = withContext(Dispatchers.IO) {
+                    PokemonRepository.getPokemon(number)
+                }
 
                 pokemonApiResult?.let {
                     Pokemon(
@@ -32,7 +40,8 @@ class PokemonViewModel : ViewModel() {
                         pokemonApiResult.sprites.front_default
                     )
                 }
-            })
+            }
+            pokemons.postValue(pokemonList)
         }
     }
 }
