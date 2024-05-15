@@ -1,14 +1,13 @@
 package com.example.pokedex.controller
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.databinding.PokemonListRowBinding
 import com.example.pokedex.model.Pokemon
-import com.example.pokedex.model.PokemonResponse
 import com.squareup.picasso.Picasso
+
 class PokemonListAdapter(private val items: List<Pokemon?>, val clickListener: OnCityClickListener) : RecyclerView.Adapter<PokemonListAdapter.ViewHolder>() {
     interface OnCityClickListener{
         fun onPokemonClick(view: View, position: Int)

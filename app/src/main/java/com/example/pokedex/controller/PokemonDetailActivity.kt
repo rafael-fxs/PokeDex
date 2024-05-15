@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.viewModelScope
 import com.example.pokedex.R
 import com.example.pokedex.databinding.ActivityPokemonDetailBinding

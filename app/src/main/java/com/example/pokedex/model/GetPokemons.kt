@@ -1,10 +1,8 @@
 package com.example.pokedex.model
 
-import androidx.lifecycle.MutableLiveData
 //import com.example.pokedex.model.toPokemon
 //import com.example.pokedex.model.toPokemons
-import com.example.pokedex.model.Pokemon
-import com.example.pokedex.model.Pokemons
+import androidx.lifecycle.MutableLiveData
 
 class GetPokemons {
     private var pokemons = MutableLiveData<List<Pokemon?>>()

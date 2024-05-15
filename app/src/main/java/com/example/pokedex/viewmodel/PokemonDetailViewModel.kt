@@ -18,7 +18,7 @@ class PokemonDetailViewModel() : ViewModel() {
         loading.postValue(true)
         return withContext(Dispatchers.IO) {
             val pokemonApiResult = PokemonRepository.getPokemon(id)
-            loading.postValue(false) // Indica que parou de carregar
+            loading.postValue(false)
 
             pokemonApiResult?.let {
                 Pokemon(

@@ -14,7 +14,7 @@ class PokemonViewModel : ViewModel() {
     var loading = MutableLiveData<Boolean>()
 
     init {
-        loading.value = true // Inicialmente, está carregando
+        loading.value = true
         viewModelScope.launch {
             loadPokemons()
         }
@@ -22,7 +22,7 @@ class PokemonViewModel : ViewModel() {
 
     private suspend fun loadPokemons() {
         val pokemonsApiResult = withContext(Dispatchers.IO) {
-            loading.postValue(true) // Indicar que está carregando
+            loading.postValue(true)
             PokemonRepository.listPokemons()
         }
 

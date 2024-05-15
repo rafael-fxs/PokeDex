@@ -7,7 +7,6 @@ import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokedex.R
 import com.example.pokedex.databinding.ActivityMainBinding
