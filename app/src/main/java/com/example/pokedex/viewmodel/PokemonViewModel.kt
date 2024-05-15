@@ -48,4 +48,20 @@ class PokemonViewModel : ViewModel() {
             loading.postValue(false)
         }
     }
+
+    suspend fun getPokemonInfo(name: String): Pokemon? {
+        loading.postValue(true)
+        return withContext(Dispatchers.IO) {
+            val pokemonApiResult = PokemonRepository.getPokemon(name)
+            loading.postValue(false) // Indica que parou de carregar
+
+            pokemonApiResult?.let {
+                Pokemon(
+                    pokemonApiResult.id,
+                    pokemonApiResult.name,
+                    pokemonApiResult.sprites.front_default
+                )
+            }
+        }
+    }
 }

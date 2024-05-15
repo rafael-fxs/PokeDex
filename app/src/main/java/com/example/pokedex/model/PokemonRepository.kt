@@ -25,4 +25,9 @@ object PokemonRepository {
         val call = service.getPokemon(number)
         return call.execute().body()
     }
+
+    fun getPokemon(name: String): PokemonResponse? {
+        val call = service.getPokemon(name)
+        return call.execute().body()
+    }
 }

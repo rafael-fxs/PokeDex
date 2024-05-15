@@ -11,4 +11,7 @@ interface PokemonApi {
 
     @GET("pokemon/{number}")
     fun getPokemon(@Path("number") number: Int): Call<PokemonResponse>
+
+    @GET("pokemon/{name}")
+    fun getPokemon(@Path("name") name: String): Call<PokemonResponse>
 }
