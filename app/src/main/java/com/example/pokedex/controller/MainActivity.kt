@@ -16,22 +16,28 @@ import com.example.pokedex.viewmodel.PokemonViewModelFactory
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
-    lateinit var viewModel: PokemonViewModel
-    lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: PokemonViewModel
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(
             this, R.layout.activity_main
         )
         initViewModel()
+        observeLoadingState()
     }
 
     private fun initViewModel() {
         viewModel = PokemonViewModelFactory().create(PokemonViewModel::class.java)
-        viewModel.viewModelScope.launch {
-            viewModel.pokemons.observe(this@MainActivity, Observer {
-                initRecyclerView(it)
-            })
+        viewModel.pokemons.observe(this, Observer {
+            initRecyclerView(it)
+        })
+    }
+
+    private fun observeLoadingState() {
+        viewModel.loading.observe(this) { isLoading ->
+            binding.loadingProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 
@@ -40,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         binding.pokemonListRecyclerview.adapter = PokemonListAdapter(pokemons, object : PokemonListAdapter.OnCityClickListener {
             override fun onPokemonClick(view: View, position: Int) {
                 val intent = Intent(this@MainActivity, PokemonDetailActivity::class.java)
+                pokemons[position]?.let { intent.putExtra("pokemon_id", it.id) }
                 startActivity(intent)
             }
         })

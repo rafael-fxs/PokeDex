@@ -11,8 +11,10 @@ import kotlinx.coroutines.withContext
 
 class PokemonViewModel : ViewModel() {
     var pokemons = MutableLiveData<List<Pokemon?>>()
+    var loading = MutableLiveData<Boolean>()
 
     init {
+        loading.value = true // Inicialmente, está carregando
         viewModelScope.launch {
             loadPokemons()
         }
@@ -20,6 +22,7 @@ class PokemonViewModel : ViewModel() {
 
     private suspend fun loadPokemons() {
         val pokemonsApiResult = withContext(Dispatchers.IO) {
+            loading.postValue(true) // Indicar que está carregando
             PokemonRepository.listPokemons()
         }
 
@@ -42,6 +45,7 @@ class PokemonViewModel : ViewModel() {
                 }
             }
             pokemons.postValue(pokemonList)
+            loading.postValue(false)
         }
     }
 }
