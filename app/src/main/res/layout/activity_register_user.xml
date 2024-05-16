@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".controller.MainActivity">
+    tools:context=".controller.RegisterUserActivity">
+
 
     <Space
         android:layout_width="match_parent"
@@ -28,40 +28,43 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/editTextUsername"
+                android:id="@+id/editTextRegisterUsername"
                 android:layout_width="323dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/username"
-                android:importantForAutofill="no"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:textColorHint="#546E7A" />
+                android:textColorHint="#546E7A"
+                android:importantForAutofill="no" />
 
             <EditText
-                android:id="@+id/editTextPassword"
+                android:id="@+id/editTextRegisterPassword"
                 android:layout_width="322dp"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/password"
+                android:inputType="textPassword"
+                android:minHeight="48dp"
+                android:textColorHint="#546E7A"
+                android:importantForAutofill="no" />
+
+            <EditText
+                android:id="@+id/editTextRegisterRepeatPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/repeat_password"
                 android:importantForAutofill="no"
                 android:inputType="textPassword"
                 android:minHeight="48dp"
                 android:textColorHint="#546E7A" />
 
             <Button
-                android:id="@+id/buttonSignIn"
+                android:id="@+id/buttonCreate"
                 android:layout_width="318dp"
                 android:layout_height="wrap_content"
-                android:text="@string/sign_in" />
-
-            <Button
-                android:id="@+id/buttonRegister"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/register"
-                tools:ignore="VisualLintButtonSize" />
-
+                android:text="@string/create" />
         </LinearLayout>
 
         <Space

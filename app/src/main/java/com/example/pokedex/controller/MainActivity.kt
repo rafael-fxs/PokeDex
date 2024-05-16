@@ -1,102 +1,110 @@
 package com.example.pokedex.controller
 
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.SearchView
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.example.pokedex.R
-import com.example.pokedex.databinding.ActivityMainBinding
-import com.example.pokedex.model.Pokemon
-import com.example.pokedex.viewmodel.PokemonViewModel
-import com.example.pokedex.viewmodel.PokemonViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.pokedex.model.User
+import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var viewModel: PokemonViewModel
-    private lateinit var binding: ActivityMainBinding
-    private lateinit var searchView: SearchView
-    private var filteredPokemons: List<Pokemon?> = listOf()
+    private lateinit var inputUsername: EditText
+    private lateinit var inputPassword: EditText
+    private lateinit var buttonSignIn: Button
+    private lateinit var buttonRegisterUser: Button
+    private var userList: MutableList<User> = mutableListOf(User("user", "1234"))
+    private var userAunteticated: User? = null;
+
+    private val registerUserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ it ->
+        if(it.resultCode == RESULT_OK){
+            val json = it.data?.getStringExtra("user")
+            val newUser = json?.let { User.fromJson(it) }!!
+            userList.add(newUser)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(
-            this, R.layout.activity_main
-        )
-        initViewModel()
-        setupSearchView()
-        observeLoadingState()
-    }
-
-    private fun initViewModel() {
-        viewModel = PokemonViewModelFactory().create(PokemonViewModel::class.java)
-        viewModel.pokemons.observe(this, Observer {
-            filteredPokemons = it
-            updateRecyclerView()
-        })
-    }
-
-    private fun setupSearchView() {
-        searchView = binding.searchView
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filterPokemons(newText)
-                return true
-            }
-        })
-    }
-
-    private fun filterPokemons(query: String?) {
-        if (query.isNullOrBlank()) {
-            filteredPokemons = viewModel.pokemons.value ?: listOf()
-        } else {
-            val filteredList = viewModel.pokemons.value?.filter { pokemon ->
-                pokemon?.name?.contains(query, ignoreCase = true) ?: false
-            }
-            filteredPokemons = filteredList ?: listOf()
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
         }
 
-        if (filteredPokemons.isNullOrEmpty() && !query.isNullOrBlank()) {
-            searchPokemon(query)
-        } else {
-            updateRecyclerView()
-        }
+        inputUsername = findViewById(R.id.editTextUsername);
+        inputPassword = findViewById(R.id.editTextPassword);
+        buttonSignIn = findViewById(R.id.buttonSignIn);
+        buttonSignIn.setEnabled(false);
+        buttonRegisterUser = findViewById(R.id.buttonRegister)
+        inputUsername.addTextChangedListener(textWatcher);
+        inputPassword.addTextChangedListener(textWatcher);
+        buttonSignIn.setOnClickListener{signIn()}
+        buttonRegisterUser.setOnClickListener{registerUser()}
     }
 
-    private fun searchPokemon(query: String) {
-        CoroutineScope(Dispatchers.Main).launch {
-            val pokemon = viewModel.getPokemonInfo(query)
-            pokemon?.let {
-                filteredPokemons = listOf(it)
-                updateRecyclerView()
+    private val textWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            val login = inputUsername.text.trim()
+            val password = inputPassword.text.trim()
+            buttonSignIn.setEnabled(login.isNotEmpty() && password.isNotEmpty())
+        }
+        override fun afterTextChanged(s: Editable?) {}
+    }
+
+    private fun signIn() {
+        userAunteticated = null;
+        val login = inputUsername.text.trim().toString()
+        val password = inputPassword.text.trim().toString()
+        val userFind = userList.find { it.username == login && it.password == password }
+        if (userFind != null) {
+            userAunteticated = userFind;
+            Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show()
+            cleanFields()
+            val intent = Intent(this,PokemonHomeActivity::class.java)
+            startActivity(intent)
+            return
+        }
+
+        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
+        builder
+            .setTitle("The fields are incorrect")
+            .setPositiveButton("Close") { _, _ ->
+                cleanFields()
             }
-        }
+
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 
-    private fun observeLoadingState() {
-        viewModel.loading.observe(this) { isLoading ->
-            binding.loadingProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            binding.searchView.isEnabled = !isLoading
-        }
+    private fun registerUser() {
+        val intent = Intent(this, RegisterUserActivity::class.java)
+        intent.putExtra("userList", Gson().toJson(userList))
+        registerUserLauncher.launch(intent)
+        return
     }
 
-    private fun updateRecyclerView() {
-        binding.pokemonListRecyclerview.layoutManager = GridLayoutManager(this, 2)
-        binding.pokemonListRecyclerview.adapter = PokemonListAdapter(filteredPokemons, object : PokemonListAdapter.OnCityClickListener {
-            override fun onPokemonClick(view: View, position: Int) {
-                val intent = Intent(this@MainActivity, PokemonDetailActivity::class.java)
-                filteredPokemons[position]?.let { intent.putExtra("pokemon_id", it.id) }
-                startActivity(intent)
-            }
-        })
+    private fun cleanFields() {
+        inputUsername.setText("");
+        inputPassword.setText("");
+    }
+
+    private fun saveContentToFile(context: Context, content: String, filename: String){
+        context.openFileOutput(filename, Context.MODE_PRIVATE).use {
+            it.write(content.toByteArray())
+        }
     }
 }
