@@ -1,7 +1,6 @@
 package com.example.pokedex.controller
 
 import android.app.AlertDialog
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -9,22 +8,22 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.databinding.DataBindingUtil
 import com.example.pokedex.R
+import com.example.pokedex.databinding.ActivityMainBinding
 import com.example.pokedex.model.User
 import com.google.gson.Gson
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityMainBinding
     private lateinit var inputUsername: EditText
     private lateinit var inputPassword: EditText
     private lateinit var buttonSignIn: Button
     private lateinit var buttonRegisterUser: Button
     private var userList: MutableList<User> = mutableListOf(User("user", "1234"))
-    private var userAunteticated: User? = null;
+    private var userAuthenticated: User? = null;
 
     private val registerUserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ it ->
         if(it.resultCode == RESULT_OK){
@@ -36,19 +35,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = DataBindingUtil.setContentView(
+            this, R.layout.activity_main
+        )
 
-        inputUsername = findViewById(R.id.editTextUsername);
-        inputPassword = findViewById(R.id.editTextPassword);
-        buttonSignIn = findViewById(R.id.buttonSignIn);
-        buttonSignIn.setEnabled(false);
-        buttonRegisterUser = findViewById(R.id.buttonRegister)
+        inputUsername = binding.editTextUsername
+        inputPassword = binding.editTextPassword
+        buttonSignIn = binding.buttonSignIn
+        buttonSignIn.isEnabled = false;
+        buttonRegisterUser = binding.buttonRegister
         inputUsername.addTextChangedListener(textWatcher);
         inputPassword.addTextChangedListener(textWatcher);
         buttonSignIn.setOnClickListener{signIn()}
@@ -60,18 +55,18 @@ class MainActivity : AppCompatActivity() {
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             val login = inputUsername.text.trim()
             val password = inputPassword.text.trim()
-            buttonSignIn.setEnabled(login.isNotEmpty() && password.isNotEmpty())
+            buttonSignIn.isEnabled = login.isNotEmpty() && password.isNotEmpty()
         }
         override fun afterTextChanged(s: Editable?) {}
     }
 
     private fun signIn() {
-        userAunteticated = null;
+        userAuthenticated = null;
         val login = inputUsername.text.trim().toString()
         val password = inputPassword.text.trim().toString()
         val userFind = userList.find { it.username == login && it.password == password }
         if (userFind != null) {
-            userAunteticated = userFind;
+            userAuthenticated = userFind;
             Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show()
             cleanFields()
             val intent = Intent(this,PokemonHomeActivity::class.java)
@@ -100,11 +95,5 @@ class MainActivity : AppCompatActivity() {
     private fun cleanFields() {
         inputUsername.setText("");
         inputPassword.setText("");
-    }
-
-    private fun saveContentToFile(context: Context, content: String, filename: String){
-        context.openFileOutput(filename, Context.MODE_PRIVATE).use {
-            it.write(content.toByteArray())
-        }
     }
 }

@@ -1,53 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".controller.RegisterUserActivity">
-
-
-    <Space
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="189dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+        android:layout_height="match_parent"
+        tools:context=".controller.RegisterUserActivity">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <EditText
                 android:id="@+id/editTextRegisterUsername"
-                android:layout_width="323dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/username"
+                android:importantForAutofill="no"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:textColorHint="#546E7A"
-                android:importantForAutofill="no" />
+                android:textColorHint="#546E7A" />
 
             <EditText
                 android:id="@+id/editTextRegisterPassword"
-                android:layout_width="322dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/password"
+                android:importantForAutofill="no"
                 android:inputType="textPassword"
                 android:minHeight="48dp"
-                android:textColorHint="#546E7A"
-                android:importantForAutofill="no" />
+                android:textColorHint="#546E7A" />
 
             <EditText
                 android:id="@+id/editTextRegisterRepeatPassword"
@@ -62,15 +55,10 @@
 
             <Button
                 android:id="@+id/buttonCreate"
-                android:layout_width="318dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/create" />
+
         </LinearLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-    </LinearLayout>
-</LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

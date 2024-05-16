@@ -12,11 +12,15 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.databinding.DataBindingUtil
 import com.example.pokedex.R
+import com.example.pokedex.databinding.ActivityMainBinding
+import com.example.pokedex.databinding.ActivityRegisterUserBinding
 import com.example.pokedex.model.User
 import com.google.gson.Gson
 
 class RegisterUserActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityRegisterUserBinding
     private lateinit var inputRegisterUsername: EditText
     private lateinit var inputRegisterPassword: EditText
     private lateinit var inputRegisterRepeatPassword: EditText
@@ -26,21 +30,17 @@ class RegisterUserActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_register_user)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        binding = DataBindingUtil.setContentView(
+            this, R.layout.activity_register_user
+        )
 
-        inputRegisterUsername = findViewById(R.id.editTextRegisterUsername);
-        inputRegisterPassword = findViewById(R.id.editTextRegisterPassword);
-        inputRegisterRepeatPassword = findViewById(R.id.editTextRegisterRepeatPassword);
+        inputRegisterUsername = binding.editTextRegisterUsername
+        inputRegisterPassword = binding.editTextRegisterPassword
+        inputRegisterRepeatPassword = binding.editTextRegisterRepeatPassword
 
         userList = Gson().fromJson(intent.getStringExtra("userList"), Array<User>::class.java).toMutableList()
-        buttonCreate = findViewById(R.id.buttonCreate);
-        buttonCreate.setEnabled(false);
+        buttonCreate = binding.buttonCreate
+        buttonCreate.isEnabled = false;
         inputRegisterUsername.addTextChangedListener(textWatcher);
         inputRegisterPassword.addTextChangedListener(textWatcher);
         inputRegisterRepeatPassword.addTextChangedListener(textWatcher);
@@ -54,7 +54,7 @@ class RegisterUserActivity : AppCompatActivity() {
             val login = inputRegisterUsername.text.trim().toString()
             val password = inputRegisterPassword.text.trim().toString()
             val passwordRepeated = inputRegisterRepeatPassword.text.trim().toString()
-            buttonCreate.setEnabled(login.isNotBlank() && password.isNotBlank() && passwordRepeated.isNotBlank()
+            buttonCreate.isEnabled = (login.isNotBlank() && password.isNotBlank() && passwordRepeated.isNotBlank()
                     && (password == passwordRepeated))
         }
         override fun afterTextChanged(s: Editable?) {
