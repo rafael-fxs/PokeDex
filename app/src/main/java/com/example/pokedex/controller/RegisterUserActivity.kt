@@ -8,37 +8,38 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import com.example.pokedex.R
-import com.example.pokedex.databinding.ActivityMainBinding
 import com.example.pokedex.databinding.ActivityRegisterUserBinding
-import com.example.pokedex.model.User
+import com.example.pokedex.model.UserEntity
+import com.example.pokedex.model.UserRepository
+import com.example.pokedex.viewmodel.LoginViewModel
+import com.example.pokedex.viewmodel.LoginViewModelFactory
+import com.example.pokedex.viewmodel.RegisterUserViewModel
+import com.example.pokedex.viewmodel.RegisterUserViewModelFactory
 import com.google.gson.Gson
 
 class RegisterUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterUserBinding
+    private lateinit var viewModel: RegisterUserViewModel
     private lateinit var inputRegisterUsername: EditText
     private lateinit var inputRegisterPassword: EditText
     private lateinit var inputRegisterRepeatPassword: EditText
     private lateinit var buttonCreate: Button
-    private var userList: MutableList<User> = mutableListOf()
-    private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(
             this, R.layout.activity_register_user
         )
+        viewModel = RegisterUserViewModelFactory().create(RegisterUserViewModel::class.java)
+        UserRepository.setContext(this);
 
         inputRegisterUsername = binding.editTextRegisterUsername
         inputRegisterPassword = binding.editTextRegisterPassword
         inputRegisterRepeatPassword = binding.editTextRegisterRepeatPassword
 
-        userList = Gson().fromJson(intent.getStringExtra("userList"), Array<User>::class.java).toMutableList()
         buttonCreate = binding.buttonCreate
         buttonCreate.isEnabled = false;
         inputRegisterUsername.addTextChangedListener(textWatcher);
@@ -65,7 +66,7 @@ class RegisterUserActivity : AppCompatActivity() {
         val login = inputRegisterUsername.text.trim().toString()
         val password = inputRegisterPassword.text.trim().toString()
         val passwordRepeated = inputRegisterRepeatPassword.text.trim().toString()
-        val userFind = userList.find { it.username == login.lowercase() }
+        val userFind = viewModel.getByUsername(login)
 
         if (userFind != null) {
             val builder: AlertDialog.Builder = AlertDialog.Builder(this)
@@ -82,9 +83,7 @@ class RegisterUserActivity : AppCompatActivity() {
 
         if (password == passwordRepeated) {
             Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show()
-            user = User(login.lowercase(), password)
-            val intent = Intent()
-            intent.putExtra("user", user.toJson())
+            viewModel.createUser(UserEntity(0, login.lowercase(), password))
             setResult(RESULT_OK,intent)
             finish()
         }

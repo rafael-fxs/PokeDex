@@ -8,36 +8,32 @@ import android.text.TextWatcher
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.pokedex.R
 import com.example.pokedex.databinding.ActivityMainBinding
-import com.example.pokedex.model.User
-import com.google.gson.Gson
+import com.example.pokedex.model.UserEntity
+import com.example.pokedex.model.UserRepository
+import com.example.pokedex.viewmodel.LoginViewModel
+import com.example.pokedex.viewmodel.LoginViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var viewModel: LoginViewModel
     private lateinit var inputUsername: EditText
     private lateinit var inputPassword: EditText
     private lateinit var buttonSignIn: Button
     private lateinit var buttonRegisterUser: Button
-    private var userList: MutableList<User> = mutableListOf(User("user", "1234"))
-    private var userAuthenticated: User? = null;
+    private var userAuthenticated: UserEntity? = null;
 
-    private val registerUserLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ it ->
-        if(it.resultCode == RESULT_OK){
-            val json = it.data?.getStringExtra("user")
-            val newUser = json?.let { User.fromJson(it) }!!
-            userList.add(newUser)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(
             this, R.layout.activity_main
         )
+        viewModel = LoginViewModelFactory().create(LoginViewModel::class.java)
+        UserRepository.setContext(this);
 
         inputUsername = binding.editTextUsername
         inputPassword = binding.editTextPassword
@@ -64,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         userAuthenticated = null;
         val login = inputUsername.text.trim().toString()
         val password = inputPassword.text.trim().toString()
-        val userFind = userList.find { it.username == login && it.password == password }
+        val userFind = viewModel.getByUsernameAndPassword(login, password)
         if (userFind != null) {
             userAuthenticated = userFind;
             Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show()
@@ -87,8 +83,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun registerUser() {
         val intent = Intent(this, RegisterUserActivity::class.java)
-        intent.putExtra("userList", Gson().toJson(userList))
-        registerUserLauncher.launch(intent)
+        startActivity(intent)
         return
     }
 
