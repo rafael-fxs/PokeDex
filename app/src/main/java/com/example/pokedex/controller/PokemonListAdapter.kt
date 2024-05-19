@@ -1,5 +1,6 @@
 package com.example.pokedex.controller
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,7 @@ class PokemonListAdapter(private val items: List<Pokemon?>, val clickListener: O
             pokemon?.let {
                 binding.pokemonName.text = it.name
                 Picasso.get().load(it.image).into(binding.pokemonImage)
+                binding.pokemonBorderColor.setBackgroundColor(Color.parseColor(it.typeColor))
             }
             binding.root.setOnClickListener{
                 clickListener.onPokemonClick(it,adapterPosition)

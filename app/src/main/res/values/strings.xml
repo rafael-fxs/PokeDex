@@ -10,4 +10,7 @@
     <string name="sign_in">Sign in</string>
     <string name="new_username">New Username</string>
     <string name="new_password">New Password</string>
+    <string name="stat_format">%1$s - %2$s</string>
+    <string name="height">Height:</string>
+    <string name="width">Width:</string>
 </resources>
