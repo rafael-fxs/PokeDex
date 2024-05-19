@@ -13,6 +13,7 @@ import com.example.pokedex.R
 import com.example.pokedex.databinding.ActivityPokemonDetailBinding
 import com.example.pokedex.model.Pokemon
 import com.example.pokedex.model.Statistics
+import com.example.pokedex.util.Utils
 import com.example.pokedex.viewmodel.PokemonDetailViewModel
 import com.example.pokedex.viewmodel.PokemonDetailViewModelFactory
 import com.google.android.material.chip.Chip
@@ -63,8 +64,8 @@ class PokemonDetailActivity : AppCompatActivity() {
                 chip.text = type
                 binding.typeChipGroup.addView(chip)
             }
-//            binding.valueHeight.text = it.height
-//            binding.valueWidth.text = it.weight
+            binding.valueHeight.text = "${Utils.decimetresToMetres(it.height)} M";
+            binding.valueWeight.text = "${Utils.convertHectogramsToKilograms(it.weight)} KG";
             updateRecyclerView(it.stats)
         }
     }

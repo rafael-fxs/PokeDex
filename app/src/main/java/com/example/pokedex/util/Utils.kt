@@ -9,5 +9,13 @@ class Utils {
                 if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
             }
         }
+
+        fun decimetresToMetres(decimetres: Double): Double {
+            return decimetres / 10
+        }
+
+        fun convertHectogramsToKilograms(hectograms: Double): Double {
+            return hectograms / 10
+        }
     }
 }

@@ -12,8 +12,8 @@ data class PokemonResponse (
     val stats: List<Stats>,
     val abilities: List<Ability>,
     val types: List<Types>,
-    val weight: Int,
-    val height: Int
+    val weight: Double,
+    val height: Double
 )
 
 data class SpritesResponse (
