@@ -1,11 +1,11 @@
-package com.example.pokedex.viewmodel
+package com.example.pokedex.viewmodel.pokemonhome
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.pokedex.model.Pokemon
-import com.example.pokedex.model.PokemonRepository
-import com.example.pokedex.model.toPokemon
+import com.example.pokedex.model.repository.PokemonRepository
+import com.example.pokedex.model.response.domain.Pokemon
+import com.example.pokedex.model.response.request.toPokemon
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext

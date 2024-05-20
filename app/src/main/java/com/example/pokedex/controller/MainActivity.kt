@@ -13,9 +13,9 @@ import androidx.databinding.DataBindingUtil
 import com.example.pokedex.R
 import com.example.pokedex.databinding.ActivityMainBinding
 import com.example.pokedex.model.Singleton
-import com.example.pokedex.model.UserRepository
-import com.example.pokedex.viewmodel.LoginViewModel
-import com.example.pokedex.viewmodel.LoginViewModelFactory
+import com.example.pokedex.model.repository.UserRepository
+import com.example.pokedex.viewmodel.login.LoginViewModel
+import com.example.pokedex.viewmodel.login.LoginViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding

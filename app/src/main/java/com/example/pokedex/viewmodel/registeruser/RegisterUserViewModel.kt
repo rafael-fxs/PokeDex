@@ -1,8 +1,8 @@
-package com.example.pokedex.viewmodel
+package com.example.pokedex.viewmodel.registeruser
 
 import androidx.lifecycle.ViewModel
-import com.example.pokedex.model.UserEntity
-import com.example.pokedex.model.UserRepository
+import com.example.pokedex.model.data.UserEntity
+import com.example.pokedex.model.repository.UserRepository
 
 class RegisterUserViewModel : ViewModel() {
 

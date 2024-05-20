@@ -1,12 +1,12 @@
-package com.example.pokedex.viewmodel
+package com.example.pokedex.viewmodel.pokemondetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class LoginViewModelFactory : ViewModelProvider.Factory {
+class PokemonDetailViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return if (modelClass.isAssignableFrom(LoginViewModel::class.java)){
-            LoginViewModel() as T
+        return if (modelClass.isAssignableFrom(PokemonDetailViewModel::class.java)){
+            PokemonDetailViewModel() as T
         } else {
             throw IllegalArgumentException("ViewModel not found")
         }

@@ -1,10 +1,9 @@
-package com.example.pokedex.model
+package com.example.pokedex.model.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.example.pokedex.util.Converters
-import com.google.gson.Gson
 import java.io.Serializable
 
 @Entity(tableName = "user")

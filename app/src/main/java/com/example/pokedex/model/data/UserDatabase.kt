@@ -1,4 +1,4 @@
-package com.example.pokedex.model
+package com.example.pokedex.model.data
 
 import android.content.Context
 import androidx.room.Database

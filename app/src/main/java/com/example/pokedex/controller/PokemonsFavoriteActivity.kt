@@ -8,10 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokedex.R
+import com.example.pokedex.controller.adapters.PokemonListAdapter
 import com.example.pokedex.databinding.ActivityPokemonsFavoriteBinding
-import com.example.pokedex.model.Pokemon
-import com.example.pokedex.viewmodel.PokemonsFavoriteViewModel
-import com.example.pokedex.viewmodel.PokemonsFavoriteViewModelFactory
+import com.example.pokedex.model.response.domain.Pokemon
+import com.example.pokedex.viewmodel.pokemonsfavorite.PokemonsFavoriteViewModel
+import com.example.pokedex.viewmodel.pokemonsfavorite.PokemonsFavoriteViewModelFactory
 
 class PokemonsFavoriteActivity : AppCompatActivity() {
     private lateinit var viewModel: PokemonsFavoriteViewModel

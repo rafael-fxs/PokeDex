@@ -1,7 +1,6 @@
 package com.example.pokedex.controller
 
 import android.app.AlertDialog
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,13 +11,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.pokedex.R
 import com.example.pokedex.databinding.ActivityRegisterUserBinding
-import com.example.pokedex.model.UserEntity
-import com.example.pokedex.model.UserRepository
-import com.example.pokedex.viewmodel.LoginViewModel
-import com.example.pokedex.viewmodel.LoginViewModelFactory
-import com.example.pokedex.viewmodel.RegisterUserViewModel
-import com.example.pokedex.viewmodel.RegisterUserViewModelFactory
-import com.google.gson.Gson
+import com.example.pokedex.model.data.UserEntity
+import com.example.pokedex.model.repository.UserRepository
+import com.example.pokedex.viewmodel.registeruser.RegisterUserViewModel
+import com.example.pokedex.viewmodel.registeruser.RegisterUserViewModelFactory
 
 class RegisterUserActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterUserBinding

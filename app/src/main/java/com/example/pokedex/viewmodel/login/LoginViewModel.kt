@@ -1,10 +1,8 @@
-package com.example.pokedex.viewmodel
+package com.example.pokedex.viewmodel.login
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.pokedex.model.UserEntity
-import com.example.pokedex.model.UserRepository
+import com.example.pokedex.model.data.UserEntity
+import com.example.pokedex.model.repository.UserRepository
 
 class LoginViewModel : ViewModel() {
     fun getByUsernameAndPassword(username: String, password: String): UserEntity? {

@@ -1,7 +1,8 @@
-package com.example.pokedex.model
+package com.example.pokedex.model.response.request
 
+import com.example.pokedex.model.response.domain.Pokemon
+import com.example.pokedex.model.response.domain.Statistics
 import com.example.pokedex.util.Utils
-import java.util.Locale
 
 
 data class PokemonResponse (

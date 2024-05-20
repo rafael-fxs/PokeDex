@@ -1,6 +1,9 @@
-package com.example.pokedex.model
+package com.example.pokedex.model.repository
 
 import android.content.Context
+import com.example.pokedex.model.data.UserDao
+import com.example.pokedex.model.data.UserDatabase
+import com.example.pokedex.model.data.UserEntity
 
 object UserRepository {
     private lateinit var dao: UserDao

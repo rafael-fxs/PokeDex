@@ -1,4 +1,4 @@
-package com.example.pokedex.model
+package com.example.pokedex.model.data
 
 import androidx.room.Dao
 import androidx.room.Delete

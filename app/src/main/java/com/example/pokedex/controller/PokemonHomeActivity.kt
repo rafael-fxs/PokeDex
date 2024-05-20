@@ -9,10 +9,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokedex.R
+import com.example.pokedex.controller.adapters.PokemonListAdapter
 import com.example.pokedex.databinding.ActivityPokemonHomeBinding
-import com.example.pokedex.model.Pokemon
-import com.example.pokedex.viewmodel.PokemonHomeViewModel
-import com.example.pokedex.viewmodel.PokemonHomeViewModelFactory
+import com.example.pokedex.model.response.domain.Pokemon
+import com.example.pokedex.viewmodel.pokemonhome.PokemonHomeViewModel
+import com.example.pokedex.viewmodel.pokemonhome.PokemonHomeViewModelFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

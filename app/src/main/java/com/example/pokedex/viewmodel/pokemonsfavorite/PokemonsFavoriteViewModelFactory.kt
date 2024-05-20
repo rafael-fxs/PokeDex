@@ -1,4 +1,4 @@
-package com.example.pokedex.viewmodel
+package com.example.pokedex.viewmodel.pokemonsfavorite
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

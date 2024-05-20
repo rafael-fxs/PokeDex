@@ -1,5 +1,8 @@
-package com.example.pokedex.model
+package com.example.pokedex.model.repository
 
+import com.example.pokedex.model.data.PokemonApi
+import com.example.pokedex.model.response.request.PokemonResponse
+import com.example.pokedex.model.response.request.PokemonsResponse
 import com.example.pokedex.util.Constants.BASE_URL
 import com.example.pokedex.util.Constants.PAGE_SIZE
 import retrofit2.Retrofit

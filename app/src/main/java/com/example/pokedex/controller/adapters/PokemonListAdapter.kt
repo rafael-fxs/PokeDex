@@ -1,4 +1,4 @@
-package com.example.pokedex.controller
+package com.example.pokedex.controller.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.databinding.PokemonListRowBinding
-import com.example.pokedex.model.Pokemon
+import com.example.pokedex.model.response.domain.Pokemon
 import com.squareup.picasso.Picasso
 
 class PokemonListAdapter(private val items: List<Pokemon?>, val clickListener: OnCityClickListener) : RecyclerView.Adapter<PokemonListAdapter.ViewHolder>() {

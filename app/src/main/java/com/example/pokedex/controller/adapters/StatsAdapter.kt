@@ -1,4 +1,4 @@
-package com.example.pokedex.controller
+package com.example.pokedex.controller.adapters
 
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -6,8 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedex.databinding.StatisticListRowBinding
-import com.example.pokedex.model.Statistics
-import com.squareup.picasso.Picasso
+import com.example.pokedex.model.response.domain.Statistics
 
 class StatsAdapter(private val stats: List<Statistics>) : RecyclerView.Adapter<StatsAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: StatisticListRowBinding) : RecyclerView.ViewHolder(binding.root){
