@@ -6,48 +6,35 @@ import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.pokedex.R
-import com.example.pokedex.databinding.ActivityPokemonHomeBinding
+import com.example.pokedex.databinding.ActivityPokemonsFavoriteBinding
 import com.example.pokedex.model.Pokemon
-import com.example.pokedex.viewmodel.PokemonHomeViewModel
-import com.example.pokedex.viewmodel.PokemonHomeViewModelFactory
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import com.example.pokedex.viewmodel.PokemonsFavoriteViewModel
+import com.example.pokedex.viewmodel.PokemonsFavoriteViewModelFactory
 
-class PokemonHomeActivity : AppCompatActivity() {
-    private lateinit var viewModel: PokemonHomeViewModel
-    private lateinit var binding: ActivityPokemonHomeBinding
+class PokemonsFavoriteActivity : AppCompatActivity() {
+    private lateinit var viewModel: PokemonsFavoriteViewModel
+    private lateinit var binding: ActivityPokemonsFavoriteBinding
     private lateinit var searchView: SearchView
     private var filteredPokemons: List<Pokemon?> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(
-            this, R.layout.activity_pokemon_home
+            this, R.layout.activity_pokemons_favorite
         )
-
-        initFavoriteButton()
         initViewModel()
         setupSearchView()
         observeLoadingState()
     }
 
-    private fun initFavoriteButton() {
-        binding.floatingFavoriteButton.setOnClickListener{
-            val intent = Intent(this@PokemonHomeActivity, PokemonsFavoriteActivity::class.java)
-            startActivity(intent)
-        }
-    }
-
     private fun initViewModel() {
-        viewModel = PokemonHomeViewModelFactory().create(PokemonHomeViewModel::class.java)
-        viewModel.pokemons.observe(this, Observer {
+        viewModel = PokemonsFavoriteViewModelFactory().create(PokemonsFavoriteViewModel::class.java)
+        viewModel.pokemons.observe(this) {
             filteredPokemons = it
             updateRecyclerView()
-        })
+        }
     }
 
     private fun setupSearchView() {
@@ -73,28 +60,12 @@ class PokemonHomeActivity : AppCompatActivity() {
             }
             filteredPokemons = filteredList ?: listOf()
         }
-
-        if (filteredPokemons.isNullOrEmpty() && !query.isNullOrBlank()) {
-            searchPokemon(query)
-        } else {
-            updateRecyclerView()
-        }
-    }
-
-    private fun searchPokemon(query: String) {
-        CoroutineScope(Dispatchers.Main).launch {
-            val pokemon = viewModel.getPokemonInfo(query)
-            pokemon?.let {
-                filteredPokemons = listOf(it)
-                updateRecyclerView()
-            }
-        }
+        updateRecyclerView()
     }
 
     private fun observeLoadingState() {
         viewModel.loading.observe(this) { isLoading ->
             binding.loadingProgressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
-            binding.floatingFavoriteButton.visibility = if (isLoading) View.GONE else View.VISIBLE
             binding.searchView.isEnabled = !isLoading
         }
     }
@@ -103,10 +74,15 @@ class PokemonHomeActivity : AppCompatActivity() {
         binding.pokemonListRecyclerview.layoutManager = GridLayoutManager(this, 2)
         binding.pokemonListRecyclerview.adapter = PokemonListAdapter(filteredPokemons, object : PokemonListAdapter.OnCityClickListener {
             override fun onPokemonClick(view: View, position: Int) {
-                val intent = Intent(this@PokemonHomeActivity, PokemonDetailActivity::class.java)
+                val intent = Intent(this@PokemonsFavoriteActivity, PokemonDetailActivity::class.java)
                 filteredPokemons[position]?.let { intent.putExtra("pokemon_id", it.id) }
                 startActivity(intent)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initViewModel()
     }
 }

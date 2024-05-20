@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PokemonViewModel : ViewModel() {
+class PokemonHomeViewModel : ViewModel() {
     var pokemons = MutableLiveData<List<Pokemon?>>()
     var loading = MutableLiveData<Boolean>()
 

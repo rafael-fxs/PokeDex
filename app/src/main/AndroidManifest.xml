@@ -24,6 +24,9 @@
             android:name=".controller.PokemonDetailActivity"
             android:exported="false" />
         <activity
+            android:name=".controller.PokemonsFavoriteActivity"
+            android:exported="false" />
+        <activity
             android:name=".controller.MainActivity"
             android:exported="true">
             <intent-filter>
