@@ -27,6 +27,7 @@ class PokemonDetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityPokemonDetailBinding
     private lateinit var imageDownloader: ImageDownloader
     private var pokemon: Pokemon? = null
+    private lateinit var pokemonImage: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +75,8 @@ class PokemonDetailActivity : AppCompatActivity() {
     private fun loadData() {
         pokemon?.let { pokemon ->
             binding.pokemonName.text = pokemon.name
-            Picasso.get().load(pokemon.image).into(binding.pokemonImage)
+            pokemonImage = pokemon.image
+            Picasso.get().load(pokemonImage).into(binding.pokemonImage)
             binding.body.setBackgroundColor(Color.parseColor(pokemon.typeColor))
             for (type in pokemon.types) {
                 val chip = Chip(this)
@@ -84,7 +86,7 @@ class PokemonDetailActivity : AppCompatActivity() {
             binding.valueHeight.text = "${Utils.decimetresToMetres(pokemon.height)} M";
             binding.valueWeight.text = "${Utils.convertHectogramsToKilograms(pokemon.weight)} KG"
             binding.downloadImageButton.setOnClickListener{
-                imageDownloader.downloadImage(pokemon.image)
+                imageDownloader.downloadImage(pokemonImage)
             }
             updateRecyclerView(pokemon.stats)
         }
@@ -93,5 +95,14 @@ class PokemonDetailActivity : AppCompatActivity() {
     private fun updateRecyclerView(stats: List<Statistics>) {
         binding.recyclerViewStats.layoutManager = LinearLayoutManager(this)
         binding.recyclerViewStats.adapter = StatsAdapter(stats)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        imageDownloader.handlePermissionsResult(requestCode, grantResults, pokemonImage)
     }
 }

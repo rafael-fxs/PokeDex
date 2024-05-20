@@ -20,21 +20,25 @@ class ImageDownloader(private val activity: Activity) {
     private val STORAGE_PERMISSION_CODE = 1
 
     fun downloadImage(imageUrl: String) {
+        val permissions = mutableListOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.READ_MEDIA_IMAGES)
+        }
+
         if (ContextCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
             == PackageManager.PERMISSION_GRANTED ||
-            ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_MEDIA_IMAGES)
-            == PackageManager.PERMISSION_GRANTED) {
+            (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+                    ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_MEDIA_IMAGES)
+                    == PackageManager.PERMISSION_GRANTED)) {
             fetchImage(imageUrl)
         } else {
             ActivityCompat.requestPermissions(
                 activity,
-                arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_MEDIA_IMAGES),
+                permissions.toTypedArray(),
                 STORAGE_PERMISSION_CODE
             )
         }
     }
-
-
 
     private fun fetchImage(url: String) {
         Picasso.get().load(url).into(object : Target {
@@ -45,7 +49,7 @@ class ImageDownloader(private val activity: Activity) {
             }
 
             override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
-                Toast.makeText(activity, "Falha ao baixar a imagem", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Failed to download the image", Toast.LENGTH_SHORT).show()
             }
 
             override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
@@ -69,16 +73,25 @@ class ImageDownloader(private val activity: Activity) {
                 outputStream = contentResolver.openOutputStream(uri)
                 if (outputStream != null) {
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-                    Toast.makeText(activity, "Imagem salva na galeria", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Image saved in the gallery", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(activity, "Falha ao salvar a imagem", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, "Failed to save the image", Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                Toast.makeText(activity, "Falha ao salvar a imagem", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Failed to save the image", Toast.LENGTH_SHORT).show()
             } finally {
                 outputStream?.close()
             }
+        }
+    }
+
+    fun handlePermissionsResult(requestCode: Int, grantResults: IntArray, imageUrl: String) {
+        if (requestCode == STORAGE_PERMISSION_CODE && grantResults.isNotEmpty()
+            && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+            fetchImage(imageUrl)
+        } else {
+            Toast.makeText(activity, "Storage permission denied", Toast.LENGTH_SHORT).show()
         }
     }
 }
