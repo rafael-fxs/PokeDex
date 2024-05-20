@@ -19,11 +19,13 @@ import com.example.pokedex.viewmodel.pokemondetail.PokemonDetailViewModelFactory
 import com.google.android.material.chip.Chip
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
+import com.example.pokedex.util.ImageDownloader
 
 
 class PokemonDetailActivity : AppCompatActivity() {
     private lateinit var viewModel: PokemonDetailViewModel
     private lateinit var binding: ActivityPokemonDetailBinding
+    private lateinit var imageDownloader: ImageDownloader
     private var pokemon: Pokemon? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +33,8 @@ class PokemonDetailActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(
             this, R.layout.activity_pokemon_detail
         )
+        imageDownloader = ImageDownloader(this)
+
         initViewModel()
         observeLoadingState()
         observeFavoriteState()
@@ -68,18 +72,21 @@ class PokemonDetailActivity : AppCompatActivity() {
     }
 
     private fun loadData() {
-        pokemon?.let {
-            binding.pokemonName.text = it.name
-            Picasso.get().load(it.image).into(binding.pokemonImage)
-            binding.body.setBackgroundColor(Color.parseColor(it.typeColor))
-            for (type in it.types) {
+        pokemon?.let { pokemon ->
+            binding.pokemonName.text = pokemon.name
+            Picasso.get().load(pokemon.image).into(binding.pokemonImage)
+            binding.body.setBackgroundColor(Color.parseColor(pokemon.typeColor))
+            for (type in pokemon.types) {
                 val chip = Chip(this)
                 chip.text = type
                 binding.typeChipGroup.addView(chip)
             }
-            binding.valueHeight.text = "${Utils.decimetresToMetres(it.height)} M";
-            binding.valueWeight.text = "${Utils.convertHectogramsToKilograms(it.weight)} KG";
-            updateRecyclerView(it.stats)
+            binding.valueHeight.text = "${Utils.decimetresToMetres(pokemon.height)} M";
+            binding.valueWeight.text = "${Utils.convertHectogramsToKilograms(pokemon.weight)} KG"
+            binding.downloadImageButton.setOnClickListener{
+                imageDownloader.downloadImage(pokemon.image)
+            }
+            updateRecyclerView(pokemon.stats)
         }
     }
 

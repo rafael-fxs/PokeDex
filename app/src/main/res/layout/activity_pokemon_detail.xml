@@ -139,6 +139,16 @@
                     </LinearLayout>
                 </LinearLayout>
 
+                <Button
+                    android:id="@+id/downloadImageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="@string/download_image"
+                    app:layout_constraintEnd_toEndOf="@+id/recyclerViewStats"
+                    app:layout_constraintStart_toStartOf="@+id/recyclerViewStats"
+                    app:layout_constraintTop_toBottomOf="@+id/recyclerViewStats" />
+
                 <ImageButton
                     android:id="@+id/favoriteButton"
                     android:layout_width="32dp"
@@ -154,9 +164,9 @@
                     app:tint="#9E9E9E"
                     android:contentDescription="@string/favorite_pokemon"
                     />
+
+
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
