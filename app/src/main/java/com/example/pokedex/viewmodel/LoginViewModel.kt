@@ -1,5 +1,7 @@
 package com.example.pokedex.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.pokedex.model.UserEntity
 import com.example.pokedex.model.UserRepository

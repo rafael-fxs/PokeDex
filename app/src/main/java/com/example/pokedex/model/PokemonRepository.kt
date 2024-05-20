@@ -30,4 +30,5 @@ object PokemonRepository {
         val call = service.getPokemon(name)
         return call.execute().body()
     }
+
 }

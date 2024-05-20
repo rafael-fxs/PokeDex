@@ -4,8 +4,11 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import com.example.pokedex.util.Converters
 
 @Database(entities = [UserEntity::class], version = 1)
+@TypeConverters(Converters::class)
 abstract class UserDatabase: RoomDatabase() {
     abstract fun userDao(): UserDao
     companion object{

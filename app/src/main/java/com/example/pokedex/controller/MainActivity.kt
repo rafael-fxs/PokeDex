@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.example.pokedex.R
 import com.example.pokedex.databinding.ActivityMainBinding
-import com.example.pokedex.model.UserEntity
+import com.example.pokedex.model.Singleton
 import com.example.pokedex.model.UserRepository
 import com.example.pokedex.viewmodel.LoginViewModel
 import com.example.pokedex.viewmodel.LoginViewModelFactory
@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var inputPassword: EditText
     private lateinit var buttonSignIn: Button
     private lateinit var buttonRegisterUser: Button
-    private var userAuthenticated: UserEntity? = null;
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,14 +56,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun signIn() {
-        userAuthenticated = null;
         val login = inputUsername.text.trim().toString()
         val password = inputPassword.text.trim().toString()
         val userFind = viewModel.getByUsernameAndPassword(login, password)
         if (userFind != null) {
-            userAuthenticated = userFind;
             Toast.makeText(this, "Success!", Toast.LENGTH_SHORT).show()
             cleanFields()
+            Singleton.setCurrentUser(userFind)
             val intent = Intent(this,PokemonHomeActivity::class.java)
             startActivity(intent)
             return

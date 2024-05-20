@@ -13,4 +13,6 @@
     <string name="stat_format">%1$s - %2$s</string>
     <string name="height">Height:</string>
     <string name="weight">Weight:</string>
+    <string name="favorite_pokemon">Favorite Pokemon</string>
+    <string name="favorite_list_pokemons">Favorite List Pokemons</string>
 </resources>
