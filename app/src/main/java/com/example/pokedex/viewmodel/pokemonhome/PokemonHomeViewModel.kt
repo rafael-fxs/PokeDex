@@ -29,12 +29,8 @@ class PokemonHomeViewModel : ViewModel() {
 
         pokemonsApiResult?.results?.let {
             val pokemonList = it.map { pokemonResult ->
-                val number = pokemonResult.url
-                    .replace("https://pokeapi.co/api/v2/pokemon/", "")
-                    .replace("/", "").toInt()
-
                 val pokemonApiResult = withContext(Dispatchers.IO) {
-                    PokemonRepository.getPokemon(number)
+                    PokemonRepository.getPokemon(pokemonResult.name)
                 }
 
                 pokemonApiResult?.toPokemon()
